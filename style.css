@@ -1,0 +1,118 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+}
+.colOut {
+  background-color: black;
+  height: 370px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 20px;
+  opacity: 85%;
+}
+.colIn {
+  height: 350px;
+  width: 50px;
+  background-color: black;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-direction: column;
+  gap: 50px 0px;
+}
+.sqr {
+  height: 50px;
+  width: 50px;
+  background-color: white;
+  box-shadow: 0px 0px 20px white;
+  border-radius: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sqr:hover {
+  width: 53px;
+  border-radius: 40%;
+  transition: 0.2s;
+}
+.info {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.invisible {
+  visibility: hidden;
+}
+.fa-circle-info {
+  font-size: 30px;
+  padding: 5px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.alert {
+  position: absolute;
+  visibility: hidden;
+  top: 0;
+  right: 30%;
+  left: 30%;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  user-select: none;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* In case someone would have got less than 490 px */
+@media only screen and (max-width: 490px) {
+  .colOut {
+    height: 40%;
+    width: 30%;
+    gap: 10%;
+  }
+  .colIn {
+    height: 80%;
+    width: 45%;
+    gap: 10% 10%;
+    padding: 0 5%;
+  }
+  .sqr {
+    height: 20%;
+    width: 100%;
+    gap: 50px 0px;
+  }
+  .sqr:hover {
+    height: 20%;
+    width: 100%;
+    gap: 50px 0px;
+  }
+}
