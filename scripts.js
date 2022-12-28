@@ -1,17 +1,3 @@
-function div(a, b) {
-  return Math.round(a / b - 0.5);
-}
-
-function activeSquare(square) {
-  square.style.boxShadow = "0px 0px 25px white";
-  square.style.backgroundColor = "white";
-}
-
-function inactiveSquare(square) {
-  square.style.boxShadow = "0px 0px 10px gray";
-  square.style.backgroundColor = "black";
-}
-
 const hour1 = document.getElementsByClassName("hour1")[0];
 const hour2 = document.getElementsByClassName("hour2")[0];
 const hour3 = document.getElementsByClassName("hour3")[0];
@@ -35,20 +21,56 @@ const sek5 = document.getElementsByClassName("sek5")[0];
 const sek6 = document.getElementsByClassName("sek6")[0];
 const sek7 = document.getElementsByClassName("sek7")[0];
 
-bclock();
-setInterval(bclock, 1000);
+function div(a) {
+  return Math.round(a / 10 - 0.5);
+}
+
+function activeSquare(square) {
+  square.style.boxShadow = "0px 0px 25px white";
+  square.style.backgroundColor = "white";
+}
+
+function inactiveSquare() {
+  for(let i=0 ; i < arguments.length ; i++){
+    arguments[i].style.boxShadow = "0px 0px 10px gray";
+    arguments[i].style.backgroundColor = "black";
+  } 
+}
+
+function sqrArrayFill(timeToDivide,mode){
+  let sqrOfTwo = new Array();
+  let dividedTime;
+  if(mode == 1){
+    dividedTime = timeToDivide % 10;
+  }else if(mode == 2){
+    dividedTime = div(timeToDivide, 10);
+  }
+  var i = 0;
+  while (dividedTime > 0) {
+    i++;
+    if (dividedTime - Math.pow(2, i) < 0) {
+      sqrOfTwo.push(Math.pow(2, i - 1));
+      dividedTime -= Math.pow(2, i - 1);
+      i = 0;
+    }
+  }
+  return sqrOfTwo;
+}
+//fast debug
+cl = (a)=>{
+  console.log(a);
+}
 
 function bclock() {
+  //Date initialization
   const date = new Date();
   const hour = date.getHours();
   const min = date.getMinutes();
   const sek = date.getSeconds();
 
-  //hour first sign
-  if (hour < 10) {
-    inactiveSquare(hour1);
-    inactiveSquare(hour2);
-  } else if (hour >= 10 && hour < 20) {
+  //[hour] first column
+  if (hour < 10) inactiveSquare(hour1,hour2);
+  else if (hour >= 10 && hour < 20) {
     inactiveSquare(hour1);
     activeSquare(hour2);
   } else {
@@ -56,168 +78,85 @@ function bclock() {
     inactiveSquare(hour2);
   }
 
-  //hour second sign
-  var sqrOftwo = new Array();
-  hourSecond = hour % 10;
-  var i = 0;
+  //[hours] second column
+  var sqrOfTwo = new Array();
+  sqrOfTwo = sqrArrayFill(hour,1);
+  
+  inactiveSquare(hour3,hour4,hour5,hour6);
 
-  while (hourSecond > 0) {
-    i++;
-    if (hourSecond - Math.pow(2, i) < 0) {
-      sqrOftwo.push(Math.pow(2, i - 1));
-      hourSecond -= Math.pow(2, i - 1);
-      i = 0;
-    }
+  for (let i = 0; i < sqrOfTwo.length; i++) {
+    if (sqrOfTwo[i] == 8) activeSquare(hour3);
+
+    if (sqrOfTwo[i] == 4) activeSquare(hour4);
+
+    if (sqrOfTwo[i] == 2) activeSquare(hour5);
+
+    if (sqrOfTwo[i] == 1) activeSquare(hour6);
   }
 
-  inactiveSquare(hour3);
-  inactiveSquare(hour4);
-  inactiveSquare(hour5);
-  inactiveSquare(hour6);
+  //[minutes] first column
+  sqrOfTwo = [];
+  sqrOfTwo = sqrArrayFill(min,2);
 
-  for (let i = 0; i < sqrOftwo.length; i++) {
-    if (sqrOftwo[i] == 8) {
-      activeSquare(hour3);
-    }
-    if (sqrOftwo[i] == 4) {
-      activeSquare(hour4);
-    }
-    if (sqrOftwo[i] == 2) {
-      activeSquare(hour5);
-    }
-    if (sqrOftwo[i] == 1) {
-      activeSquare(hour6);
-    }
+  inactiveSquare(min1,min2,min3);
+
+  for (let i = 0; i < sqrOfTwo.length; i++) {
+    if (sqrOfTwo[i] == 4) activeSquare(min1);
+
+    if (sqrOfTwo[i] == 2) activeSquare(min2);
+
+    if (sqrOfTwo[i] == 1) activeSquare(min3);
   }
 
-  //min first sign
-  sqrOftwo = [];
-  var minFirst = div(min, 10);
-  i = 0;
+  //[minutes] second column
+  sqrOfTwo = [];
+  sqrOfTwo = sqrArrayFill(min,1);
 
-  while (minFirst > 0) {
-    i++;
-    if (minFirst - Math.pow(2, i) < 0) {
-      sqrOftwo.push(Math.pow(2, i - 1));
-      minFirst -= Math.pow(2, i - 1);
-      i = 0;
-    }
+  inactiveSquare(min4,min5,min6,min7);
+
+  for (let i = 0; i < sqrOfTwo.length; i++) {
+    if (sqrOfTwo[i] == 8) activeSquare(min4);
+
+    if (sqrOfTwo[i] == 4) activeSquare(min5);
+
+    if (sqrOfTwo[i] == 2) activeSquare(min6);
+
+    if (sqrOfTwo[i] == 1) activeSquare(min7);
   }
 
-  inactiveSquare(min1);
-  inactiveSquare(min2);
-  inactiveSquare(min3);
+  //[seconds] first column
+  sqrOfTwo = [];
+  sqrOfTwo = sqrArrayFill(sek,2);
 
-  for (let i = 0; i < sqrOftwo.length; i++) {
-    if (sqrOftwo[i] == 4) {
-      activeSquare(min1);
-    }
-    if (sqrOftwo[i] == 2) {
-      activeSquare(min2);
-    }
-    if (sqrOftwo[i] == 1) {
-      activeSquare(min3);
-    }
+  inactiveSquare(sek1,sek2,sek3);
+
+  for (let i = 0; i < sqrOfTwo.length; i++) {
+    if (sqrOfTwo[i] == 4) activeSquare(sek1);
+
+    if (sqrOfTwo[i] == 2) activeSquare(sek2);
+
+    if (sqrOfTwo[i] == 1) activeSquare(sek3);
   }
 
-  //min second sign
-  sqrOftwo = [];
-  var minSecond = min % 10;
-  i = 0;
+  //[seconds] second column
+  sqrOfTwo = [];
+  sqrOfTwo = sqrArrayFill(sek,1);
 
-  while (minSecond > 0) {
-    i++;
-    if (minSecond - Math.pow(2, i) < 0) {
-      sqrOftwo.push(Math.pow(2, i - 1));
-      minSecond -= Math.pow(2, i - 1);
-      i = 0;
-    }
-  }
+  inactiveSquare(sek4,sek5,sek6,sek7);
 
-  inactiveSquare(min4);
-  inactiveSquare(min5);
-  inactiveSquare(min6);
-  inactiveSquare(min7);
-
-  for (let i = 0; i < sqrOftwo.length; i++) {
-    if (sqrOftwo[i] == 8) {
-      activeSquare(min4);
-    }
-    if (sqrOftwo[i] == 4) {
-      activeSquare(min5);
-    }
-    if (sqrOftwo[i] == 2) {
-      activeSquare(min6);
-    }
-    if (sqrOftwo[i] == 1) {
-      activeSquare(min7);
-    }
-  }
-
-  //sec first sign
-  sqrOftwo = [];
-  var secFirst = div(sek, 10);
-  i = 0;
-
-  while (secFirst > 0) {
-    i++;
-    if (secFirst - Math.pow(2, i) < 0) {
-      sqrOftwo.push(Math.pow(2, i - 1));
-      secFirst -= Math.pow(2, i - 1);
-      i = 0;
-    }
-  }
-
-  inactiveSquare(sek1);
-  inactiveSquare(sek2);
-  inactiveSquare(sek3);
-
-  for (let i = 0; i < sqrOftwo.length; i++) {
-    if (sqrOftwo[i] == 4) {
-      activeSquare(sek1);
-    }
-    if (sqrOftwo[i] == 2) {
-      activeSquare(sek2);
-    }
-    if (sqrOftwo[i] == 1) {
-      activeSquare(sek3);
-    }
-  }
-
-  //sec second sign
-  sqrOftwo = [];
-  var secSecond = sek % 10;
-  i = 0;
-
-  while (secSecond > 0) {
-    i++;
-    if (secSecond - Math.pow(2, i) < 0) {
-      sqrOftwo.push(Math.pow(2, i - 1));
-      secSecond -= Math.pow(2, i - 1);
-      i = 0;
-    }
-  }
-
-  inactiveSquare(sek4);
-  inactiveSquare(sek5);
-  inactiveSquare(sek6);
-  inactiveSquare(sek7);
-
-  for (let i = 0; i < sqrOftwo.length; i++) {
-    if (sqrOftwo[i] == 8) {
-      activeSquare(sek4);
-    }
-    if (sqrOftwo[i] == 4) {
-      activeSquare(sek5);
-    }
-    if (sqrOftwo[i] == 2) {
-      activeSquare(sek6);
-    }
-    if (sqrOftwo[i] == 1) {
-      activeSquare(sek7);
-    }
+  for (let i = 0; i < sqrOfTwo.length; i++) {
+    if (sqrOfTwo[i] == 8) activeSquare(sek4);
+      
+    if (sqrOfTwo[i] == 4) activeSquare(sek5);
+      
+    if (sqrOfTwo[i] == 2) activeSquare(sek6);
+     
+    if (sqrOfTwo[i] == 1) activeSquare(sek7);
   }
 }
+
+bclock();
+setInterval(bclock, 1000);
 
 //about/help/info
 
@@ -229,7 +168,6 @@ const squares = document.getElementsByClassName("sqr");
 
 let buttonSwitch = false;
 
-console.log(squares);
 
 infoButton.addEventListener("click", () => {
   infoBox();
